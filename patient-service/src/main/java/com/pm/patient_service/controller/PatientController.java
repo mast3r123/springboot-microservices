@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/patients")
@@ -36,5 +37,11 @@ public class PatientController {
                 .buildAndExpand(patientResponseDTO.getId())
                 .toUri();
         return ResponseEntity.created(location).body(patientResponseDTO);
+    }
+
+    @PutMapping
+    public ResponseEntity<PatientResponseDTO> updatePatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO, UUID patientId) {
+        PatientResponseDTO patientResponseDTO = patientService.updatePatient(patientId, patientRequestDTO);
+        return ResponseEntity.ok().body(patientResponseDTO);
     }
 }
