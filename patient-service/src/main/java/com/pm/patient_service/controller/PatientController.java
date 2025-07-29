@@ -39,9 +39,9 @@ public class PatientController {
         return ResponseEntity.created(location).body(patientResponseDTO);
     }
 
-    @PutMapping
-    public ResponseEntity<PatientResponseDTO> updatePatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO, UUID patientId) {
-        PatientResponseDTO patientResponseDTO = patientService.updatePatient(patientId, patientRequestDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id, @Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+        PatientResponseDTO patientResponseDTO = patientService.updatePatient(id, patientRequestDTO);
         return ResponseEntity.ok().body(patientResponseDTO);
     }
 }
