@@ -1,3 +1,4 @@
+# Use Amazon Corretto 17 for Maven build stage
 FROM maven:3.9.5-amazoncorretto-17 AS builder
 
 WORKDIR /app
@@ -10,11 +11,12 @@ COPY src ./src
 
 RUN mvn clean package
 
-FROM openjdk:17-jdk AS runner
+# Use Amazon Corretto 17 for the runtime stage
+FROM amazoncorretto:17 AS runner
 
 WORKDIR /app
 
-COPY --from=builder ./app/target/patient-service-0.0.1.SNAPSHOT.jar ./app.jar
+COPY --from=builder /app/target/patient-service-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 4000
 
