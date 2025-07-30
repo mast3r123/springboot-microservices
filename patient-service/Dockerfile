@@ -1,4 +1,4 @@
-FROM maven:3.9.5-amazoncorretto-17 as builder
+FROM maven:3.9.5-amazoncorretto-17 AS builder
 
 WORKDIR /app
 
@@ -9,3 +9,13 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 
 RUN mvn clean package
+
+FROM openjdk:17-jdk AS runner
+
+WORKDIR /app
+
+COPY --from=builder ./app/target/patient-service-0.0.1.SNAPSHOT.jar ./app.jar
+
+EXPOSE 4000
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
